@@ -33,7 +33,7 @@ Format a number to have decimal significant decimal places, using decPoint as th
 ####humanize.naturalTime####
 
 ####humanize.ordinal(integer)####
-Converts a number into its [http://en.wikipedia.org/wiki/Ordinal_number_(linguistics)](ordinal representation).
+Converts a number into its [ordinal representation](http://en.wikipedia.org/wiki/Ordinal_number_\(linguistics\)).
 
 ####humanize.filesize(filesize [, kilo = 1024, decimals = 2, decPoint = '.', thousnadsSep = ',']) ####
 Converts a byte count to a human readable value using kilo as the basis, and numberFormat formatting
