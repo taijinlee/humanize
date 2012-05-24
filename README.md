@@ -1,6 +1,8 @@
 # humanize #
 
-Javascript string formatter for human readability. Blatently stolen from @milanvrekic/JS-humanize
+Javascript string formatter for human readability.
+
+Idea, name, and initial code blatently stolen from [milanvrekic/JS-humanize](http://github.com/milanvrekic/JS-humanize)
 
 Can be loaded via AMD or in node directly.
 
