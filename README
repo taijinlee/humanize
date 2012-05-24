@@ -1,23 +1,30 @@
-JS library useful for adding a “human touch” to data. 
+Javascript string formatter for human readability. Blatently stolen from milanvrekic/JS-humanize
 
-Examples:
+Can be loaded via AMD or in node directly.
 
-intcomma (4500000 = 4,500,000)
+Install:
+npm install humanize
 
-intword (1000000 = 1.0 million)
+Functions available:
 
-naturalDay (15 April 2012 16:25:30 = Today)
+humanize.time
 
-ordinal (3 = 3rd)
+humanize.date (a la php)
 
-filesizeformat (1234567890 = 1.15 Gb)
+humanzie.numberFormat
 
-linebreaks (Play\ning with blank lines = <p>Play<br />ing with blank lines</p>)
+humanize.naturalDay
 
-linebreaksbr (Play\ning with blank lines = Play<br />ing with blank lines)
+humanize.naturalTime
 
-pluralize (1, "y", "ies" = y)
+humanize.ordinal
 
-truncatechars ("hello world", 10 = "hello w...")
+humanize.filesize
 
-truncatewords ("Playing with truncate words", 3 = Playing with truncate ...)
+humanize.linebreaks
+
+humanize.nl2br
+
+humanize.truncatechars
+
+humanize.truncatewords
