@@ -1,30 +1,30 @@
-Javascript string formatter for human readability. Blatently stolen from milanvrekic/JS-humanize
+# humanize #
+
+Javascript string formatter for human readability. Blatently stolen from @milanvrekic/JS-humanize
 
 Can be loaded via AMD or in node directly.
 
-Install:
-npm install humanize
+## Installation ##
 
-Functions available:
+    npm install humanize
 
-humanize.time
+## Functions available: ##
 
-humanize.date (a la php)
+ - humanize.time (current time in seconds)
+ - humanize.date (a la php)
+ - humanize.numberFormat
+ - humanize.naturalDay
+ - humanize.naturalTime
+ - humanize.ordinal
+ - humanize.filesize
+ - humanize.linebreaks
+ - humanize.nl2br
+ - humanize.truncatechars
+ - humanize.truncatewords
 
-humanzie.numberFormat
-
-humanize.naturalDay
-
-humanize.naturalTime
-
-humanize.ordinal
-
-humanize.filesize
-
-humanize.linebreaks
-
-humanize.nl2br
-
-humanize.truncatechars
-
-humanize.truncatewords
+## Usage: ##
+```javascript
+var humanize = require('humanize');
+humanize.date('Y-m-d'); // 'yyyy-mm-dd'
+humanize.filesize(1234567890); // '1.15 Gb'
+```
