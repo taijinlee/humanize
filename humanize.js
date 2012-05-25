@@ -11,9 +11,10 @@
   var previousHumanize = root.humanize;
 
   var humanize = {};
+  var undefinedString = 'undefined';
 
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
+  if (typeof exports !== undefinedString) {
+    if (typeof module !== undefinedString && module.exports) {
       exports = module.exports = humanize;
     }
     exports.humanize = humanize;
@@ -45,7 +46,7 @@
    * PHP-inspired date
    */
   humanize.date = function(format, timestamp) {
-    var jsdate = ((typeof timestamp === 'undefined') ? new Date() : // Not provided
+    var jsdate = ((typeof timestamp === undefinedString) ? new Date() : // Not provided
                   (timestamp instanceof Date) ? new Date(timestamp) : // JS Date()
                   new Date(timestamp * 1000) // UNIX timestamp (auto-convert to int)
                  );
@@ -211,8 +212,8 @@
    */
   humanize.numberFormat = function(number, decimals, decPoint, thousandsSep) {
     decimals = isNaN(decimals) ? 2 : Math.abs(decimals);
-    decPoint = decPoint == undefined ? '.' : decPoint;
-    thousandsSep = thousandsSep == undefined ? ',' : thousandsSep;
+    decPoint = (typeof decPoint === undefinedString) ? '.' : decPoint;
+    thousandsSep = (typeof thousandsSep === undefinedString) ? ',' : thousandsSep;
 
     var sign = number < 0 ? '-' : '';
     number = Math.abs(+number || 0)
@@ -235,8 +236,8 @@
    * Any other day is formatted according to given argument or the DATE_FORMAT setting if no argument is given.
    */
   humanize.naturalDay = function(timestamp, format) {
-    timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
-    format = (format === undefined) ? 'Y-m-d' : format;
+    timestamp = (typeof timestamp === undefinedString) ? humanize.time() : timestamp;
+    format = (typeof format === undefinedString) ? 'Y-m-d' : format;
 
     var oneDay = 86400;
     var d = new Date();
@@ -277,8 +278,8 @@
    * 18 Feb 2007 16:31:29 becomes 1 day from now.
    */
   humanize.naturalTime = function(timestamp, format) {
-    timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
-    format = (format === undefined) ? 'g:ia' : format;
+    timestamp = (typeof timestamp === undefinedString) ? humanize.time() : timestamp;
+    format = (typeof format === undefinedString) ? 'g:ia' : format;
 
     var d = new Date();
     var today = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime() / 1000;
@@ -340,8 +341,12 @@
    * 3 becomes 3rd etc
    */
   humanize.ordinal = function(number) {
-    number = parseInt(number);
-    return number > 4 && number < 21 ? 'th' : {1: 'st', 2: 'nd', 3: 'rd'}[number % 10] || 'th';
+    number = parseInt(number, 10);
+    number = isNaN(number) ? 0 : number;
+    var sign = number < 0 ? '-' : '';
+    number = Math.abs(number);
+
+    return sign + number + (number > 4 && number < 21 ? 'th' : {1: 'st', 2: 'nd', 3: 'rd'}[number % 10] || 'th');
   };
 
   /**
@@ -351,22 +356,25 @@
    * If value is 123456789, the output would be 117.7 MB.
    */
   humanize.filesize = function(filesize, kilo, decimals, decPoint, thousandsSep) {
-    kilo = kilo == undefined ? 1024 : kilo;
+    kilo = (typeof kilo === undefinedString) ? 1024 : kilo;
     decimals = isNaN(decimals) ? 2 : Math.abs(decimals);
-    decPoint = decPoint == undefined ? '.' : decPoint;
-    thousandsSep = thousandsSep == undefined ? ',' : thousandsSep;
+    decPoint = (typeof decPoint === undefinedString) ? '.' : decPoint;
+    thousandsSep = (typeof thousandsSep === undefinedString) ? ',' : thousandsSep;
     if (filesize <= 0) { return '0 bytes'; }
 
     var thresholds = [1];
     var units = ['bytes', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb'];
-    if (filesize < kilo) { return humanize.numberFormat(filesize, 0) + units[0]; }
+    if (filesize < kilo) { return humanize.numberFormat(filesize, 0) + ' ' + units[0]; }
 
     for (var i = 1; i < units.length; i++) {
       thresholds[i] = thresholds[i-1] * kilo;
       if (filesize < thresholds[i]) {
-        return humanize.numberFormat(filesize / thresholds[i-1], decimals, decPoint, thousandsSep) + units[i];
+        return humanize.numberFormat(filesize / thresholds[i-1], decimals, decPoint, thousandsSep) + ' ' + units[i-1];
       }
     }
+
+    // use the last unit if we drop out to here
+    return humanize.numberFormat(filesize / thresholds[units.length - 1], decimals, decPoint, thousandsSep) + ' ' + units[units.length - 1];
   };
 
   /**
@@ -377,8 +385,18 @@
    * If value is Joel\nis a\n\nslug, the output will be <p>Joel<br />is a</p><p>slug</p>
    */
   humanize.linebreaks = function(str) {
-    str = str.replace(/(\r\n|\n|\r){2}/gm, '</p><p>');
-    str = str.replace(/(\r\n|\n|\r)/gm, '<br />');
+    // remove beginning and ending newlines
+    str = str.replace(/^([\n|\r]*)/, '');
+    str = str.replace(/([\n|\r]*)$/, '');
+
+    // normalize all to \n
+    str = str.replace(/(\r\n|\n|\r)/g, "\n");
+
+    // any consecutive new lines more than 2 gets turned into p tags
+    str = str.replace(/(\n{2,})/g, '</p><p>');
+
+    // any that are singletons get turned into br
+    str = str.replace(/\n/g, '<br />');
     return '<p>' + str + '</p>';
   };
 
@@ -386,7 +404,7 @@
    * Converts all newlines in a piece of plain text to HTML line breaks (<br />).
    */
   humanize.nl2br = function(str) {
-    return str.replace(/(\r\n|\n|\r)/gm, '<br />');
+    return str.replace(/(\r\n|\n|\r)/g, '<br />');
   };
 
   /**
@@ -395,7 +413,7 @@
    */
   humanize.truncatechars = function(string, length) {
     if (string.length <= length) { return string; }
-    return string.substr(0, length - 1) + '…';
+    return string.substr(0, length) + '…';
   };
 
   /**
@@ -405,7 +423,7 @@
   humanize.truncatewords = function(string, numWords) {
     var words = string.split(' ');
     if (words.length < numWords) { return string; }
-    return words.slice(0, numWords) + '…';
+    return words.slice(0, numWords).join(' ') + '…';
   };
 
 }).call(this);
