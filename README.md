@@ -22,7 +22,7 @@ humanize.filesize(1234567890); // '1.15 Gb'
 ####humanize.time()####
 Retrieves the current time in seconds
 
-####humanize.date(format [, timestamp or JS Date Object = new Date()])####
+####humanize.date(format [, timestamp / JS Date Object = new Date()])####
 This is a port of [php.js date](http://phpjs.org/functions/date:380) and behaves exactly like [PHP's date](http://php.net/manual/en/function.date.php)
 
 ####humanize.numberFormat(number [, decimals = 2, decPoint = '.', thousandsSep = ','])####
@@ -36,7 +36,7 @@ Returns 'today', 'tomorrow' or 'yesterday', as appropriate, otherwise format the
 ####humanize.ordinal(integer)####
 Converts a number into its [ordinal representation](http://en.wikipedia.org/wiki/Ordinal_number_\(linguistics\)).
 
-####humanize.filesize(filesize [, kilo = 1024, decimals = 2, decPoint = '.', thousnadsSep = ',']) ####
+####humanize.filesize(filesize [, kilo = 1024, decimals = 2, decPoint = '.', thousandsSep = ',']) ####
 Converts a byte count to a human readable value using kilo as the basis, and numberFormat formatting
 
 ####humanize.linebreaks(string)####
