@@ -38,7 +38,7 @@
     } else if (padChar.length > 1) {
       padChar = padChar.charAt(0);
     }
-    type = (type === undefined) ? 'left' : 'right'
+    type = (type === undefined) ? 'left' : 'right';
 
     if (type === 'right') {
       while (str.length < count) {
@@ -56,7 +56,7 @@
 
   humanize.time = function() {
     return new Date().getTime() / 1000;
-  }
+  };
 
   /**
    * PHP-inspired date
@@ -246,9 +246,9 @@
     thousandsSep = (thousandsSep === undefined) ? ',' : thousandsSep;
 
     var sign = number < 0 ? '-' : '';
-    number = Math.abs(+number || 0)
+    number = Math.abs(+number || 0);
 
-    var intPart = parseInt(number.toFixed(decimals)) + '';
+    var intPart = parseInt(number.toFixed(decimals), 10) + '';
     var j = intPart.length > 3 ? intPart.length % 3 : 0;
 
     return sign + (j ? intPart.substr(0, j) + thousandsSep : '') + intPart.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousandsSep) + (decimals ? decPoint + Math.abs(number - intPart).toFixed(decimals).slice(2) : '');
@@ -331,7 +331,7 @@
           if (!minutes) {
             relativeTime = 'in ' + seconds + ' seconds';
             if (seconds <= 10) {
-              relativeTime = 'now'
+              relativeTime = 'now';
             }
           } else {
             relativeTime = 'in ' + minutes + ' minutes';
@@ -347,7 +347,7 @@
           if (!minutes) {
             relativeTime = seconds + ' seconds ago';
             if (seconds <= 0) {
-              relativeTime = 'just now'
+              relativeTime = 'just now';
             }
           } else {
             relativeTime = minutes + ' minutes ago';
