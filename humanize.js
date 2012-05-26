@@ -12,13 +12,13 @@
 
   var humanize = {};
 
-  if (exports !== undefined) {
-    if (module !== undefined && module.exports) {
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
       exports = module.exports = humanize;
     }
     exports.humanize = humanize;
   } else {
-    if (define === 'function' && define.amd) {
+    if (typeof define === 'function' && define.amd) {
       define('humanize', function() {
         return humanize;
       });
