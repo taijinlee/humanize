@@ -19,6 +19,9 @@ humanize.filesize(1234567890); // '1.15 Gb'
 
 ## Functions available: ##
 
+####humanize.noConflict()####
+Give control of the "humanize" variable back to its previous owner. Returns a reference to the humanize object.
+
 ####humanize.time()####
 Retrieves the current time in seconds
 
