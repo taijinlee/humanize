@@ -1,8 +1,23 @@
 var should = require('should');
-
 var humanize = require('../humanize');
+process.env.TZ = 'America/Los_Angeles';
 
 describe('humanize:', function() {
+
+  describe('#pad', function() {
+    it('should be able to pad on the left', function() {
+      humanize.pad(123, 4, '0').should.equal('0123');
+      humanize.pad('abcd', 3, 'c').should.equal('abcd');
+      humanize.pad('cool', 7, 'Blah').should.equal('BBBcool');
+    });
+
+    it('should be able to pad on the right', function() {
+      humanize.pad(123, 4, '0', 'right').should.equal('1230');
+      humanize.pad('abcd', 3, 'c', 'right').should.equal('abcd');
+      humanize.pad('cool', 7, 'Blah', 'right').should.equal('coolBBB');
+    });
+  });
+
 
   describe('#time', function() {
     it('should be able to get the current time', function() {
@@ -12,7 +27,33 @@ describe('humanize:', function() {
   });
 
   describe('#date', function() {
-    // this one is big ... fill in later ...
+    var timestamps = require('./dateData.js')().timestamps;
+
+    it('should be able to accept timestamp, js date object, or nothing', function() {
+      var timestamp = 514088627;
+      var today = new Date();
+      humanize.date('Y-m-d').should.equal(today.getFullYear() + '-' + humanize.pad(today.getMonth() + 1, 2, '0') + '-' + humanize.pad(today.getDate(), 2, '0'));
+      humanize.date('Y-m-d', timestamp).should.equal('1986-04-16');
+      humanize.date('Y-m-d', new Date(timestamp * 1000)).should.equal('1986-04-16');
+    });
+
+    it('should be able to print out escaped characters', function() {
+      var timestamp = 514088627;
+      var today = new Date();
+      humanize.date('Y-m-d\\Y\\z\\d').should.equal(today.getFullYear() + '-' + humanize.pad(today.getMonth() + 1, 2, '0') + '-' + humanize.pad(today.getDate(), 2, '0') + 'Yzd');
+      humanize.date('Y-m-d\\Y\\z\\d', timestamp).should.equal('1986-04-16Yzd');
+      humanize.date('Y-m-d\\Y\\z\\d', new Date(timestamp * 1000)).should.equal('1986-04-16Yzd');
+    });
+
+    it('should be able to replace correct information', function() {
+      for (var timestamp in timestamps) {
+        for (var dateVal in timestamps[timestamp]) {
+          var info = 'timestamp: ' + timestamp + ' dateVal: ' + dateVal;
+          humanize.date(dateVal, timestamp).should.eql(timestamps[timestamp][dateVal], info);
+        }
+      }
+    });
+
   });
 
 

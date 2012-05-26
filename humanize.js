@@ -11,15 +11,14 @@
   var previousHumanize = root.humanize;
 
   var humanize = {};
-  var undefinedString = 'undefined';
 
-  if (typeof exports !== undefinedString) {
-    if (typeof module !== undefinedString && module.exports) {
+  if (exports !== undefined) {
+    if (module !== undefined && module.exports) {
       exports = module.exports = humanize;
     }
     exports.humanize = humanize;
   } else {
-    if (typeof define === 'function' && define.amd) {
+    if (define === 'function' && define.amd) {
       define('humanize', function() {
         return humanize;
       });
@@ -32,21 +31,46 @@
     return this;
   };
 
+  humanize.pad = function(str, count, padChar, type) {
+    str += '';
+    if (!padChar) {
+      padChar = ' ';
+    } else if (padChar.length > 1) {
+      padChar = padChar.charAt(0);
+    }
+    type = (type === undefined) ? 'left' : 'right'
+
+    if (type === 'right') {
+      while (str.length < count) {
+        str = str + padChar;
+      }
+    } else {
+      // default to left
+      while (str.length < count) {
+        str = padChar + str;
+      }
+    }
+
+    return str;
+  };
+
   humanize.time = function() {
     return new Date().getTime() / 1000;
   }
 
-  /* helper for humanize.date */
-  var _pad = function(str, count) {
-    str = String(str);
-    if (str.length >= count) { return str; }
-    return new Array((++count) - str.length).join('0') + str;
-  };
   /**
    * PHP-inspired date
    */
+
+                        /*  jan  feb  mar  apr  may  jun  jul  aug  sep  oct  nov  dec */
+  var dayTableCommon = [ 0,   0,  31,  59,  90, 120, 151, 181, 212, 243, 273, 304, 334 ];
+  var dayTableLeap   = [ 0,   0,  31,  60,  91, 121, 152, 182, 213, 244, 274, 305, 335 ];
+  // var mtable_common[13] = {  0,  31,  28,  31,  30,  31,  30,  31,  31,  30,  31,  30,  31 };
+  // static int ml_table_leap[13]   = {  0,  31,  29,  31,  30,  31,  30,  31,  31,  30,  31,  30,  31 };
+
+
   humanize.date = function(format, timestamp) {
-    var jsdate = ((typeof timestamp === undefinedString) ? new Date() : // Not provided
+    var jsdate = ((timestamp === undefined) ? new Date() : // Not provided
                   (timestamp instanceof Date) ? new Date(timestamp) : // JS Date()
                   new Date(timestamp * 1000) // UNIX timestamp (auto-convert to int)
                  );
@@ -56,13 +80,13 @@
       return f[t] ? f[t]() : s;
     };
 
-    var shortDayTxt = ['Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur'];
+    var shortDayTxt = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var monthTxt = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     var f = {
       /* Day */
       // Day of month w/leading 0; 01..31
-      d: function () { return _pad(f.j(), 2); },
+      d: function () { return humanize.pad(f.j(), 2, '0'); },
 
       // Shorthand day name; Mon..Sun
       D: function () { return f.l().slice(0, 3); },
@@ -71,7 +95,7 @@
       j: function () { return jsdate.getDate(); },
 
       // Full day name; Monday..Sunday
-      l: function () { return shortDayTxt[f.w()] + 'day'; },
+      l: function () { return shortDayTxt[f.w()]; },
 
       // ISO-8601 day of week; 1[Mon]..7[Sun]
       N: function () { return f.w() || 7; },
@@ -87,17 +111,17 @@
 
       // Day of year; 0..365
       z: function () {
-        var a = new Date(f.Y(), f.n() - 1, f.j());
-        var b = new Date(f.Y(), 0, 1);
-        return Math.round((a - b) / 86400) + 1;
+        return (f.L() ? dayTableLeap[f.n()] : dayTableCommon[f.n()]) + f.j() - 1;
       },
 
       /* Week */
       // ISO-8601 week number
       W: function () {
-        var a = new Date(f.Y(), f.n() - 1, f.j() - f.N() + 3);
-        var b = new Date(a.getFullYear(), 0, 4);
-        return _pad(1 + Math.round((a - b) / 86400 / 7), 2);
+        // days between midweek of this week and jan 4
+        // (f.z() - f.N() + 1 + 3.5) - 3
+        var midWeekDaysFromJan4 = f.z() - f.N() + 1.5;
+        // 1 + number of weeks + rounded week
+        return humanize.pad(1 + Math.floor(Math.abs(midWeekDaysFromJan4) / 7) + (midWeekDaysFromJan4 % 7 > 3.5 ? 1 : 0), 2, '0');
       },
 
       /* Month */
@@ -105,7 +129,7 @@
       F: function () { return monthTxt[jsdate.getMonth()]; },
 
       // Month w/leading 0; 01..12
-      m: function () { return _pad(f.n(), 2); },
+      m: function () { return humanize.pad(f.n(), 2, '0'); },
 
       // Shorthand month name; Jan..Dec
       M: function () { return f.F().slice(0, 3); },
@@ -118,7 +142,7 @@
 
       /* Year */
       // Is leap year?; 0 or 1
-      L: function () { return new Date(f.Y(), 1, 29).getMonth() === 1 || 0; },
+      L: function () { return new Date(f.Y(), 1, 29).getMonth() === 1 ? 1 : 0; },
 
       // ISO-8601 year
       o: function () {
@@ -142,10 +166,14 @@
 
       // Swatch Internet time; 000..999
       B: function () {
-        var H = jsdate.getUTCHours() * 3600; // Hours
-        var i = jsdate.getUTCMinutes() * 60; // Minutes
-        var s = jsdate.getUTCSeconds(); // Seconds
-        return _pad(Math.floor((H + i + s + 3600) / 86.4) % 1000, 3);
+        var unixTime = jsdate.getTime() / 1000;
+        var secondsPassedToday = unixTime % 86400 + 3600; // since it's based off of UTC+1
+        if (secondsPassedToday < 0) { secondsPassedToday += 86400; }
+        var beats = ((secondsPassedToday) / 86.4) % 1000;
+        if (unixTime < 0) {
+          return Math.ceil(beats);
+        }
+        return Math.floor(beats);
       },
 
       // 12-Hours; 1..12
@@ -155,33 +183,35 @@
       G: function () { return jsdate.getHours(); },
 
       // 12-Hours w/leading 0; 01..12
-      h: function () { return _pad(f.g(), 2); },
+      h: function () { return humanize.pad(f.g(), 2, '0'); },
 
       // 24-Hours w/leading 0; 00..23
-      H: function () { return _pad(f.G(), 2); },
+      H: function () { return humanize.pad(f.G(), 2, '0'); },
 
       // Minutes w/leading 0; 00..59
-      i: function () { return _pad(jsdate.getMinutes(), 2); },
+      i: function () { return humanize.pad(jsdate.getMinutes(), 2, '0'); },
 
       // Seconds w/leading 0; 00..59
-      s: function () { return _pad(jsdate.getSeconds(), 2); },
+      s: function () { return humanize.pad(jsdate.getSeconds(), 2, '0'); },
 
       // Microseconds; 000000-999000
-      u: function () { return _pad(jsdate.getMilliseconds() * 1000, 6); },
+      u: function () { return humanize.pad(jsdate.getMilliseconds() * 1000, 6, '0'); },
 
-      // DST observed?; 0 or 1
+      // Whether or not the date is in daylight savings time
+      /*
       I: function () {
         // Compares Jan 1 minus Jan 1 UTC to Jul 1 minus Jul 1 UTC.
         // If they are not equal, then DST is observed.
         var Y = f.Y();
         return 0 + ((new Date(Y, 0) - Date.UTC(Y, 0)) !== (new Date(Y, 6) - Date.UTC(Y, 6)));
       },
+      */
 
       // Difference to GMT in hour format; e.g. +0200
       O: function () {
         var tzo = jsdate.getTimezoneOffset();
         var tzoNum = Math.abs(tzo);
-        return (tzo > 0 ? '-' : '+') + _pad(Math.floor(tzoNum / 60) * 100 + tzoNum % 60, 4);
+        return (tzo > 0 ? '-' : '+') + humanize.pad(Math.floor(tzoNum / 60) * 100 + tzoNum % 60, 4, '0');
       },
 
       // Difference to GMT w/colon; e.g. +02:00
@@ -194,7 +224,7 @@
       Z: function () { return -jsdate.getTimezoneOffset() * 60; },
 
       // Full Date/Time, ISO-8601 date
-      c: function () { return 'Y-m-d\\Th:i:sP'.replace(formatChr, formatChrCb); },
+      c: function () { return 'Y-m-d\\TH:i:sP'.replace(formatChr, formatChrCb); },
 
       // RFC 2822
       r: function () { return 'D, d M Y H:i:s O'.replace(formatChr, formatChrCb); },
@@ -212,8 +242,8 @@
    */
   humanize.numberFormat = function(number, decimals, decPoint, thousandsSep) {
     decimals = isNaN(decimals) ? 2 : Math.abs(decimals);
-    decPoint = (typeof decPoint === undefinedString) ? '.' : decPoint;
-    thousandsSep = (typeof thousandsSep === undefinedString) ? ',' : thousandsSep;
+    decPoint = (decPoint === undefined) ? '.' : decPoint;
+    thousandsSep = (thousandsSep === undefined) ? ',' : thousandsSep;
 
     var sign = number < 0 ? '-' : '';
     number = Math.abs(+number || 0)
@@ -236,8 +266,8 @@
    * Any other day is formatted according to given argument or the DATE_FORMAT setting if no argument is given.
    */
   humanize.naturalDay = function(timestamp, format) {
-    timestamp = (typeof timestamp === undefinedString) ? humanize.time() : timestamp;
-    format = (typeof format === undefinedString) ? 'Y-m-d' : format;
+    timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
+    format = (format === undefined) ? 'Y-m-d' : format;
 
     var oneDay = 86400;
     var d = new Date();
@@ -278,8 +308,8 @@
    * 18 Feb 2007 16:31:29 becomes 1 day from now.
    */
   humanize.naturalTime = function(timestamp, format) {
-    timestamp = (typeof timestamp === undefinedString) ? humanize.time() : timestamp;
-    format = (typeof format === undefinedString) ? 'g:ia' : format;
+    timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
+    format = (format === undefined) ? 'g:ia' : format;
 
     var d = new Date();
     var today = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime() / 1000;
@@ -356,10 +386,10 @@
    * If value is 123456789, the output would be 117.7 MB.
    */
   humanize.filesize = function(filesize, kilo, decimals, decPoint, thousandsSep) {
-    kilo = (typeof kilo === undefinedString) ? 1024 : kilo;
+    kilo = (kilo === undefined) ? 1024 : kilo;
     decimals = isNaN(decimals) ? 2 : Math.abs(decimals);
-    decPoint = (typeof decPoint === undefinedString) ? '.' : decPoint;
-    thousandsSep = (typeof thousandsSep === undefinedString) ? ',' : thousandsSep;
+    decPoint = (decPoint === undefined) ? '.' : decPoint;
+    thousandsSep = (thousandsSep === undefined) ? ',' : thousandsSep;
     if (filesize <= 0) { return '0 bytes'; }
 
     var thresholds = [1];
