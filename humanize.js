@@ -54,6 +54,7 @@
     return str;
   };
 
+  // gets current unix time
   humanize.time = function() {
     return new Date().getTime() / 1000;
   };
@@ -285,7 +286,6 @@
     return humanize.date(format, timestamp);
   };
 
-  // TODO: FIX THIS
   /**
    * returns a string representing how many seconds, minutes or hours ago it was
    * falling back to a longer date format if the value is more than a day old.
@@ -309,58 +309,56 @@
    */
   humanize.naturalTime = function(timestamp, format) {
     timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
-    format = (format === undefined) ? 'g:ia' : format;
+    format = (format === undefined) ? 'Y-m-d g:ia' : format;
 
-    var d = new Date();
-    var today = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime() / 1000;
-    var relativeTime = null;
+    var timeDiff = humanize.time() - timestamp;
 
-    // if it is within today
-    if (timestamp >= today && timestamp < today + 86400) {
-      var now = humanize.time();
-      var hour = 60 * 60;
-
-      // if timestamp passed in was after an hour ago
-      if (timestamp > now - hour) {
-        var seconds = Math.round(timestamp - now);
-        var minutes = Math.round(seconds/60);
-
-        if (timestamp > now) {
-          /* future */
-          // if more than 60 minutes ago, report in hours
-          if (!minutes) {
-            relativeTime = 'in ' + seconds + ' seconds';
-            if (seconds <= 10) {
-              relativeTime = 'now';
-            }
-          } else {
-            relativeTime = 'in ' + minutes + ' minutes';
-            if (minutes === 1) {
-              relativeTime = 'in one minute';
-            } else if (minutes > 60) {
-              relativeTime = 'in about ' + Math.round(minutes/60) + ' hours';
-            }
-          }
-
-        } else {
-          /* past */
-          if (!minutes) {
-            relativeTime = seconds + ' seconds ago';
-            if (seconds <= 0) {
-              relativeTime = 'just now';
-            }
-          } else {
-            relativeTime = minutes + ' minutes ago';
-            if (minutes === 1) {
-              relativeTime = 'one minute ago';
-            }
-          }
-        }
-      }
-
+    // within 2 seconds
+    if (timeDiff < 2 && timeDiff > -2) {
+      return (timeDiff >= 0 ? 'just ' : '') + 'now';
     }
 
-    return relativeTime ? relativeTime : humanize.date(format, timestamp);
+    // within a minute
+    if (timeDiff < 60 && timeDiff > -60) {
+      return (timeDiff >= 0 ? timeDiff + ' seconds ago' : 'in ' + (-timeDiff) + ' seconds');
+    }
+
+    // within 2 minutes
+    if (timeDiff < 120 && timeDiff > -120) {
+      return (timeDiff >= 0 ? 'about a minute ago' : 'in about a minute');
+    }
+
+    // within an hour
+    if (timeDiff < 3600 && timeDiff > -3600) {
+      return (timeDiff >= 0 ? Math.floor(timeDiff / 60) + ' minutes ago' : 'in ' + Math.floor(-timeDiff / 60) + ' minutes');
+    }
+
+    // within 2 hours
+    if (timeDiff < 7200 && timeDiff > -7200) {
+      return (timeDiff >= 0 ? 'about an hour ago' : 'in about an hour');
+    }
+
+    // within 24 hours
+    if (timeDiff < 86400 && timeDiff > -86400) {
+      return (timeDiff >= 0 ? Math.floor(timeDiff / 3600) + ' hours ago' : 'in ' + Math.floor(-timeDiff / 3600) + ' hours');
+    }
+
+    // within 2 days
+    if (timeDiff < 172800 && timeDiff > -172800) {
+      return (timeDiff >= 0 ? '1 day ago' : 'in 1 day');
+    }
+
+    // within 30 days (30*86400)
+    if (timeDiff < 2592000 && timeDiff > -2592000) {
+      return (timeDiff >= 0 ? Math.floor(timeDiff / 86400) + ' days ago' : 'in ' + Math.floor(-timeDiff / 86400) + ' days');
+    }
+
+    // within 60 days (60*86400)
+    if (timeDiff < 5184000 && timeDiff > -5184000) {
+      return (timeDiff >= 0 ? 'about a month ago' : 'in about a month');
+    }
+
+
   };
 
   /**
