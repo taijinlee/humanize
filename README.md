@@ -34,7 +34,8 @@ Format a number to have decimal significant decimal places, using decPoint as th
 ####humanize.naturalDay(timestamp [, format = 'Y-m-d'])####
 Returns 'today', 'tomorrow' or 'yesterday', as appropriate, otherwise format the date using the passed format with humanize.date()
 
-####humanize.naturalTime####
+####humanize.relativeTime(timestamp)####
+Returns a relative time to the current time, seconds as the most granular up to years to the least granular.
 
 ####humanize.ordinal(integer)####
 Converts a number into its [ordinal representation](http://en.wikipedia.org/wiki/Ordinal_number_\(linguistics\)).
