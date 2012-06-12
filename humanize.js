@@ -307,7 +307,7 @@
    * 17 Feb 2007 18:31:29 becomes 2 hours from now.
    * 18 Feb 2007 16:31:29 becomes 1 day from now.
    */
-  humanize.naturalTime = function(timestamp, format) {
+  humanize.relativeTime = function(timestamp, format) {
     timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
     format = (format === undefined) ? 'Y-m-d g:ia' : format;
 

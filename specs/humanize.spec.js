@@ -146,77 +146,77 @@ describe('humanize:', function() {
     });
   });
 
-  describe('#naturalTime', function() {
+  describe('#relativeTime', function() {
     it('should return just now for anything within 2 seconds', function() {
-      humanize.naturalTime(humanize.time() - 1).should.equal('just now');
-      humanize.naturalTime(humanize.time()).should.equal('just now');
-      humanize.naturalTime(humanize.time() + 1).should.equal('now');
+      humanize.relativeTime(humanize.time() - 1).should.equal('just now');
+      humanize.relativeTime(humanize.time()).should.equal('just now');
+      humanize.relativeTime(humanize.time() + 1).should.equal('now');
     });
 
     it('should return (in) X seconds (ago) for anything between 2 seconds and 59 seconds inclusive', function() {
-      humanize.naturalTime(humanize.time() - 59).should.equal('59 seconds ago');
-      humanize.naturalTime(humanize.time() - 37).should.equal('37 seconds ago');
-      humanize.naturalTime(humanize.time() - 2).should.equal('2 seconds ago');
-      humanize.naturalTime(humanize.time() + 2).should.equal('in 2 seconds');
-      humanize.naturalTime(humanize.time() + 22).should.equal('in 22 seconds');
-      humanize.naturalTime(humanize.time() + 59).should.equal('in 59 seconds');
+      humanize.relativeTime(humanize.time() - 59).should.equal('59 seconds ago');
+      humanize.relativeTime(humanize.time() - 37).should.equal('37 seconds ago');
+      humanize.relativeTime(humanize.time() - 2).should.equal('2 seconds ago');
+      humanize.relativeTime(humanize.time() + 2).should.equal('in 2 seconds');
+      humanize.relativeTime(humanize.time() + 22).should.equal('in 22 seconds');
+      humanize.relativeTime(humanize.time() + 59).should.equal('in 59 seconds');
     });
 
     it('should return (in) about a minute (ago) for anything between 1 minute (inclusive) and 2 minutes (exclusive)', function() {
-      humanize.naturalTime(humanize.time() - 119).should.equal('about a minute ago');
-      humanize.naturalTime(humanize.time() - 73).should.equal('about a minute ago');
-      humanize.naturalTime(humanize.time() - 60).should.equal('about a minute ago');
-      humanize.naturalTime(humanize.time() + 60).should.equal('in about a minute');
-      humanize.naturalTime(humanize.time() + 90).should.equal('in about a minute');
-      humanize.naturalTime(humanize.time() + 119).should.equal('in about a minute');
+      humanize.relativeTime(humanize.time() - 119).should.equal('about a minute ago');
+      humanize.relativeTime(humanize.time() - 73).should.equal('about a minute ago');
+      humanize.relativeTime(humanize.time() - 60).should.equal('about a minute ago');
+      humanize.relativeTime(humanize.time() + 60).should.equal('in about a minute');
+      humanize.relativeTime(humanize.time() + 90).should.equal('in about a minute');
+      humanize.relativeTime(humanize.time() + 119).should.equal('in about a minute');
     });
 
     it('should return (in) X minutes (ago) for anything between 2 minutes (inclusive) and 60 minutes (exclusive)', function() {
-      humanize.naturalTime(humanize.time() - 59*60 - 59).should.equal('59 minutes ago');
-      humanize.naturalTime(humanize.time() - 59*60 - 10).should.equal('59 minutes ago');
-      humanize.naturalTime(humanize.time() - 33*60 - 17).should.equal('33 minutes ago');
-      humanize.naturalTime(humanize.time() - 33*60 - 35).should.equal('33 minutes ago');
-      humanize.naturalTime(humanize.time() - 120).should.equal('2 minutes ago');
-      humanize.naturalTime(humanize.time() + 120).should.equal('in 2 minutes');
-      humanize.naturalTime(humanize.time() + 24*60 + 17).should.equal('in 24 minutes');
-      humanize.naturalTime(humanize.time() + 47*60 + 35).should.equal('in 47 minutes');
-      humanize.naturalTime(humanize.time() + 59*60 + 16).should.equal('in 59 minutes');
-      humanize.naturalTime(humanize.time() + 59*60 + 59).should.equal('in 59 minutes');
+      humanize.relativeTime(humanize.time() - 59*60 - 59).should.equal('59 minutes ago');
+      humanize.relativeTime(humanize.time() - 59*60 - 10).should.equal('59 minutes ago');
+      humanize.relativeTime(humanize.time() - 33*60 - 17).should.equal('33 minutes ago');
+      humanize.relativeTime(humanize.time() - 33*60 - 35).should.equal('33 minutes ago');
+      humanize.relativeTime(humanize.time() - 120).should.equal('2 minutes ago');
+      humanize.relativeTime(humanize.time() + 120).should.equal('in 2 minutes');
+      humanize.relativeTime(humanize.time() + 24*60 + 17).should.equal('in 24 minutes');
+      humanize.relativeTime(humanize.time() + 47*60 + 35).should.equal('in 47 minutes');
+      humanize.relativeTime(humanize.time() + 59*60 + 16).should.equal('in 59 minutes');
+      humanize.relativeTime(humanize.time() + 59*60 + 59).should.equal('in 59 minutes');
     });
 
     it('should return (in) about an hour (ago) for anything between 1 hour (inclusive) and 2 hours (exclusive)', function() {
-      humanize.naturalTime(humanize.time() - 7199).should.equal('about an hour ago');
-      humanize.naturalTime(humanize.time() - 3601).should.equal('about an hour ago');
-      humanize.naturalTime(humanize.time() - 3600).should.equal('about an hour ago');
-      humanize.naturalTime(humanize.time() + 3600).should.equal('in about an hour');
-      humanize.naturalTime(humanize.time() + 5974).should.equal('in about an hour');
-      humanize.naturalTime(humanize.time() + 7199).should.equal('in about an hour');
+      humanize.relativeTime(humanize.time() - 7199).should.equal('about an hour ago');
+      humanize.relativeTime(humanize.time() - 3601).should.equal('about an hour ago');
+      humanize.relativeTime(humanize.time() - 3600).should.equal('about an hour ago');
+      humanize.relativeTime(humanize.time() + 3600).should.equal('in about an hour');
+      humanize.relativeTime(humanize.time() + 5974).should.equal('in about an hour');
+      humanize.relativeTime(humanize.time() + 7199).should.equal('in about an hour');
     });
 
     it('should return (in) X hours (ago) for anything between 2 hours (inclusive) and 24 hours (exclusive)', function() {
-      humanize.naturalTime(humanize.time() - 86399).should.equal('23 hours ago');
-      humanize.naturalTime(humanize.time() - (3*3600 + 56)).should.equal('3 hours ago');
-      humanize.naturalTime(humanize.time() - (15*3600 + 3599)).should.equal('15 hours ago');
-      humanize.naturalTime(humanize.time() - 7200).should.equal('2 hours ago');
-      humanize.naturalTime(humanize.time() + 7200).should.equal('in 2 hours');
-      humanize.naturalTime(humanize.time() + (10*3600 + 997)).should.equal('in 10 hours');
-      humanize.naturalTime(humanize.time() + (15*3600 + 3599)).should.equal('in 15 hours');
-      humanize.naturalTime(humanize.time() + 86399).should.equal('in 23 hours');
+      humanize.relativeTime(humanize.time() - 86399).should.equal('23 hours ago');
+      humanize.relativeTime(humanize.time() - (3*3600 + 56)).should.equal('3 hours ago');
+      humanize.relativeTime(humanize.time() - (15*3600 + 3599)).should.equal('15 hours ago');
+      humanize.relativeTime(humanize.time() - 7200).should.equal('2 hours ago');
+      humanize.relativeTime(humanize.time() + 7200).should.equal('in 2 hours');
+      humanize.relativeTime(humanize.time() + (10*3600 + 997)).should.equal('in 10 hours');
+      humanize.relativeTime(humanize.time() + (15*3600 + 3599)).should.equal('in 15 hours');
+      humanize.relativeTime(humanize.time() + 86399).should.equal('in 23 hours');
     });
 
     it('should return (in) X day(s) (ago) for anything between 1 day (inclusive) and 30 days (exclusive)', function() {
-      humanize.naturalTime(humanize.time() - (30*86400 - 1)).should.equal('29 days ago');
-      humanize.naturalTime(humanize.time() - (2*86400)).should.equal('2 days ago');
-      humanize.naturalTime(humanize.time() - (2*86400 - 1)).should.equal('1 day ago');
-      humanize.naturalTime(humanize.time() - 86400).should.equal('1 day ago');
-      humanize.naturalTime(humanize.time() + 86400).should.equal('in 1 day');
-      humanize.naturalTime(humanize.time() + (2*86400)).should.equal('in 2 days');
-      humanize.naturalTime(humanize.time() + (30*86400 - 1)).should.equal('in 29 days');
+      humanize.relativeTime(humanize.time() - (30*86400 - 1)).should.equal('29 days ago');
+      humanize.relativeTime(humanize.time() - (2*86400)).should.equal('2 days ago');
+      humanize.relativeTime(humanize.time() - (2*86400 - 1)).should.equal('1 day ago');
+      humanize.relativeTime(humanize.time() - 86400).should.equal('1 day ago');
+      humanize.relativeTime(humanize.time() + 86400).should.equal('in 1 day');
+      humanize.relativeTime(humanize.time() + (2*86400)).should.equal('in 2 days');
+      humanize.relativeTime(humanize.time() + (30*86400 - 1)).should.equal('in 29 days');
     });
 
     it('should return (in) about a month (ago) for anything between 30 days (inclusive) to 60 days (exclusive)', function() {
-      humanize.naturalTime(humanize.time() - (30*86400)).should.equal('about a month ago');
-      humanize.naturalTime(humanize.time() + (30*86400)).should.equal('in about a month');
+      humanize.relativeTime(humanize.time() - (30*86400)).should.equal('about a month ago');
+      humanize.relativeTime(humanize.time() + (30*86400)).should.equal('in about a month');
     });
 
     // fill in later...
