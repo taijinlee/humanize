@@ -262,7 +262,6 @@ describe('humanize:', function() {
       var wrapToYearsFuture1 = (new Date(june1.getFullYear() + 2, d.getMonth() - 7, d.getDate() + 19)).getTime() / 1000;
       humanize.relativeTime(wrapToYearsFuture1).should.equal('in a year');
 
-
     });
 
   });
