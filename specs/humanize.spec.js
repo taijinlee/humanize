@@ -204,22 +204,67 @@ describe('humanize:', function() {
       humanize.relativeTime(humanize.time() + 86399).should.equal('in 23 hours');
     });
 
-    it('should return (in) X day(s) (ago) for anything between 1 day (inclusive) and 30 days (exclusive)', function() {
-      humanize.relativeTime(humanize.time() - (30*86400 - 1)).should.equal('29 days ago');
+    it('should return (in) X day(s) (ago) for anything between 1 day (inclusive) and 29 days (exclusive)', function() {
+      humanize.relativeTime(humanize.time() - (29*86400 - 1)).should.equal('28 days ago');
       humanize.relativeTime(humanize.time() - (2*86400)).should.equal('2 days ago');
       humanize.relativeTime(humanize.time() - (2*86400 - 1)).should.equal('1 day ago');
       humanize.relativeTime(humanize.time() - 86400).should.equal('1 day ago');
       humanize.relativeTime(humanize.time() + 86400).should.equal('in 1 day');
       humanize.relativeTime(humanize.time() + (2*86400)).should.equal('in 2 days');
-      humanize.relativeTime(humanize.time() + (30*86400 - 1)).should.equal('in 29 days');
+      humanize.relativeTime(humanize.time() + (29*86400 - 1)).should.equal('in 28 days');
     });
 
-    it('should return (in) about a month (ago) for anything between 30 days (inclusive) to 60 days (exclusive)', function() {
-      humanize.relativeTime(humanize.time() - (30*86400)).should.equal('about a month ago');
-      humanize.relativeTime(humanize.time() + (30*86400)).should.equal('in about a month');
+    it('should return (in) about a month (ago) for anything between 28 days (inclusive) to 60 days (exclusive)', function() {
+      humanize.relativeTime(humanize.time() - (60*86400 - 1)).should.equal('about a month ago');
+      humanize.relativeTime(humanize.time() - (29*86400)).should.equal('about a month ago');
+      humanize.relativeTime(humanize.time() + (29*86400)).should.equal('in about a month');
+      humanize.relativeTime(humanize.time() + (60*86400 - 1)).should.equal('in about a month');
     });
 
-    // fill in later...
+    it('should return (in) X months (ago) using month arithmetic', function() {
+      humanize.relativeTime(humanize.time() - (60*86400)).should.equal('2 months ago');
+      humanize.relativeTime(humanize.time() + (60*86400)).should.equal('in 2 months');
+
+      var d = new Date();
+      var monthsAgo4 = (new Date(d.getFullYear(), d.getMonth() - 4, d.getDate())).getTime() / 1000;
+      humanize.relativeTime(monthsAgo4).should.equal('4 months ago');
+
+      var monthsFuture4 = (new Date(d.getFullYear(), d.getMonth() + 4, d.getDate())).getTime() / 1000;
+      humanize.relativeTime(monthsFuture4).should.equal('in 4 months');
+
+      var monthsAgo11 = (new Date(d.getFullYear(), d.getMonth() - 11, d.getDate())).getTime() / 1000;
+      humanize.relativeTime(monthsAgo11).should.equal('11 months ago');
+
+      var monthsFuture11 = (new Date(d.getFullYear(), d.getMonth() + 11, d.getDate())).getTime() / 1000;
+      humanize.relativeTime(monthsFuture11).should.equal('in 11 months');
+    });
+
+    it('should return (in) X year(s) (ago) for anything over a year via year arithmetic', function() {
+      var d = new Date();
+      var yearsAgo1 = (new Date(d.getFullYear() - 1, d.getMonth(), d.getDate())).getTime() / 1000;
+      humanize.relativeTime(yearsAgo1).should.equal('a year ago');
+
+      var yearsFuture1 = (new Date(d.getFullYear() + 1, d.getMonth(), d.getDate())).getTime() / 1000;
+      humanize.relativeTime(yearsFuture1).should.equal('in a year');
+
+      var june1 = (new Date(d.getFullYear(), 6, 1));
+
+      var yearsAgo2 = (new Date(june1.getFullYear() - 2, d.getMonth() + 6, d.getDate() + 19)).getTime() / 1000;
+      humanize.relativeTime(yearsAgo2).should.equal('2 years ago');
+
+      var wrapToYearsAgo1 = (new Date(june1.getFullYear() - 2, d.getMonth() + 7, d.getDate() + 19)).getTime() / 1000;
+      humanize.relativeTime(wrapToYearsAgo1).should.equal('a year ago');
+
+
+      var yearsFuture2 = (new Date(june1.getFullYear() + 2, d.getMonth() + 6, d.getDate() + 19)).getTime() / 1000;
+      humanize.relativeTime(yearsFuture2).should.equal('in 2 years');
+
+      var wrapToYearsFuture1 = (new Date(june1.getFullYear() + 2, d.getMonth() - 7, d.getDate() + 19)).getTime() / 1000;
+      humanize.relativeTime(wrapToYearsFuture1).should.equal('in a year');
+
+
+    });
+
   });
 
   describe('#ordinal', function() {

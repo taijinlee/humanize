@@ -272,7 +272,6 @@
 
     var oneDay = 86400;
     var d = new Date();
-
     var today = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime() / 1000;
 
     if (timestamp < today && timestamp >= today - oneDay) {
@@ -311,7 +310,8 @@
     timestamp = (timestamp === undefined) ? humanize.time() : timestamp;
     format = (format === undefined) ? 'Y-m-d g:ia' : format;
 
-    var timeDiff = humanize.time() - timestamp;
+    var currTime = humanize.time();
+    var timeDiff = currTime - timestamp;
 
     // within 2 seconds
     if (timeDiff < 2 && timeDiff > -2) {
@@ -344,21 +344,40 @@
     }
 
     // within 2 days
-    if (timeDiff < 172800 && timeDiff > -172800) {
+    var days2 = 2 * 86400;
+    if (timeDiff < days2 && timeDiff > -days2) {
       return (timeDiff >= 0 ? '1 day ago' : 'in 1 day');
     }
 
-    // within 30 days (30*86400)
-    if (timeDiff < 2592000 && timeDiff > -2592000) {
+    // within 29 days
+    var days29 = 29 * 86400;
+    if (timeDiff < days29 && timeDiff > -days29) {
       return (timeDiff >= 0 ? Math.floor(timeDiff / 86400) + ' days ago' : 'in ' + Math.floor(-timeDiff / 86400) + ' days');
     }
 
-    // within 60 days (60*86400)
-    if (timeDiff < 5184000 && timeDiff > -5184000) {
+    // within 60 days
+    var days60 = 60 * 86400;
+    if (timeDiff < days60 && timeDiff > -days60) {
       return (timeDiff >= 0 ? 'about a month ago' : 'in about a month');
     }
 
+    var currTimeYears = parseInt(humanize.date('Y', currTime), 10);
+    var timestampYears = parseInt(humanize.date('Y', timestamp), 10);
+    var currTimeMonths = currTimeYears * 12 + parseInt(humanize.date('n', currTime), 10);
+    var timestampMonths = timestampYears * 12 + parseInt(humanize.date('n', timestamp), 10);
 
+    // within a year
+    var monthDiff = currTimeMonths - timestampMonths;
+    if (monthDiff < 12 && monthDiff > -12) {
+      return (monthDiff >= 0 ? monthDiff + ' months ago' : 'in ' + (-monthDiff) + ' months');
+    }
+
+    var yearDiff = currTimeYears - timestampYears;
+    if (yearDiff < 2 && yearDiff > -2) {
+      return (yearDiff >= 0 ? 'a year ago' : 'in a year');
+    }
+
+    return (yearDiff >= 0 ? yearDiff + ' years ago' : 'in ' + (-yearDiff) + ' years');
   };
 
   /**
