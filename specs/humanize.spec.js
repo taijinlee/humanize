@@ -149,16 +149,20 @@ describe('humanize:', function() {
   describe('#relativeTime', function() {
     it('should return just now for anything within 2 seconds', function() {
       humanize.relativeTime(humanize.time() - 1).should.equal('just now');
+      humanize.relativeTime(humanize.time() - .5).should.equal('just now');
       humanize.relativeTime(humanize.time()).should.equal('just now');
+      humanize.relativeTime(humanize.time() + .5).should.equal('now');
       humanize.relativeTime(humanize.time() + 1).should.equal('now');
     });
 
     it('should return (in) X seconds (ago) for anything between 2 seconds and 59 seconds inclusive', function() {
       humanize.relativeTime(humanize.time() - 59).should.equal('59 seconds ago');
       humanize.relativeTime(humanize.time() - 37).should.equal('37 seconds ago');
+      humanize.relativeTime(humanize.time() - 37.3).should.equal('37 seconds ago');
       humanize.relativeTime(humanize.time() - 2).should.equal('2 seconds ago');
       humanize.relativeTime(humanize.time() + 2).should.equal('in 2 seconds');
       humanize.relativeTime(humanize.time() + 22).should.equal('in 22 seconds');
+      humanize.relativeTime(humanize.time() + 22.7).should.equal('in 22 seconds');
       humanize.relativeTime(humanize.time() + 59).should.equal('in 59 seconds');
     });
 
@@ -247,19 +251,18 @@ describe('humanize:', function() {
       var yearsFuture1 = (new Date(d.getFullYear() + 1, d.getMonth(), d.getDate())).getTime() / 1000;
       humanize.relativeTime(yearsFuture1).should.equal('in a year');
 
-      var june1 = (new Date(d.getFullYear(), 6, 1));
+      var june1 = (new Date(d.getFullYear(), 5, 1));
 
-      var yearsAgo2 = (new Date(june1.getFullYear() - 2, d.getMonth() + 6, d.getDate() + 19)).getTime() / 1000;
+      var yearsAgo2 = (new Date(june1.getFullYear() - 2, june1.getMonth() + 6, june1.getDate() + 19)).getTime() / 1000;
       humanize.relativeTime(yearsAgo2).should.equal('2 years ago');
 
-      var wrapToYearsAgo1 = (new Date(june1.getFullYear() - 2, d.getMonth() + 7, d.getDate() + 19)).getTime() / 1000;
+      var wrapToYearsAgo1 = (new Date(june1.getFullYear() - 2, june1.getMonth() + 7, june1.getDate() + 19)).getTime() / 1000;
       humanize.relativeTime(wrapToYearsAgo1).should.equal('a year ago');
 
-
-      var yearsFuture2 = (new Date(june1.getFullYear() + 2, d.getMonth() + 6, d.getDate() + 19)).getTime() / 1000;
+      var yearsFuture2 = (new Date(june1.getFullYear() + 2, june1.getMonth() + 6, june1.getDate() + 19)).getTime() / 1000;
       humanize.relativeTime(yearsFuture2).should.equal('in 2 years');
 
-      var wrapToYearsFuture1 = (new Date(june1.getFullYear() + 2, d.getMonth() - 7, d.getDate() + 19)).getTime() / 1000;
+      var wrapToYearsFuture1 = (new Date(june1.getFullYear() + 2, june1.getMonth() - 7, june1.getDate() + 19)).getTime() / 1000;
       humanize.relativeTime(wrapToYearsFuture1).should.equal('in a year');
 
     });

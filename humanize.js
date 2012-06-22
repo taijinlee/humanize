@@ -302,7 +302,7 @@
 
     // within a minute
     if (timeDiff < 60 && timeDiff > -60) {
-      return (timeDiff >= 0 ? timeDiff + ' seconds ago' : 'in ' + (-timeDiff) + ' seconds');
+      return (timeDiff >= 0 ? Math.floor(timeDiff) + ' seconds ago' : 'in ' + Math.floor(-timeDiff) + ' seconds');
     }
 
     // within 2 minutes
