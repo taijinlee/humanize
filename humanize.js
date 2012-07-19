@@ -1,4 +1,3 @@
-
 (function() {
 
   // Baseline setup
@@ -376,6 +375,22 @@
     number = Math.abs(number);
 
     return sign + number + (number > 4 && number < 21 ? 'th' : {1: 'st', 2: 'nd', 3: 'rd'}[number % 10] || 'th');
+  };
+  
+  //**
+    * Formats the value based on its (short) scale.
+    * @example  humanize.numberScale(1000000000) // "1 billion"
+    *
+    * Thanks to Dmitry Baranovskiy <dmitry@baranovskiy.com>
+  	*	@see 	https://gist.github.com/852326#gistcomment-22591
+    */
+  humanize.numberScale = function(n) {
+  	var nlist = String(Math.abs(n)).replace(/^\d+(?=.|$)/, function(int) { return int.replace(/(?=(?:\d{3})+$)(?!^)/g, ","); }).split(",");
+  	var num = nlist.shift();
+  	var rem = nlist[0] || 0;
+  	var rnd = Math.round(rem/10)
+  
+  	return (n < 0 ? "-" : "") + num + (rnd === 0 ? "" : "." + rnd) + " " + ["","thousand","million","billion","trillion"][nlist.length];
   };
 
   /**
