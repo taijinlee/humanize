@@ -290,7 +290,8 @@ describe('humanize:', function() {
         'APT': '0th',
         '-1': '-1st',
         '-2': '-2nd',
-        '-3': '-3rd'
+        '-3': '-3rd',
+        112: '112th'
       };
 
       for (var num in tests) {
