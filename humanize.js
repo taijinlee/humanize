@@ -374,7 +374,7 @@
     number = isNaN(number) ? 0 : number;
     var sign = number < 0 ? '-' : '';
     number = Math.abs(number);
-    tens = number % 100
+    var tens = number % 100;
 
     return sign + number + (tens > 4 && tens < 21 ? 'th' : {1: 'st', 2: 'nd', 3: 'rd'}[number % 10] || 'th');
   };
