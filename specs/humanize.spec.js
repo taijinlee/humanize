@@ -329,6 +329,31 @@ describe('humanize:', function() {
   });
 
 
+  describe('#intword', function() {
+    it('should be able to use the defaults properly', function() {
+      humanize.intword(12).should.equal('12.00');
+      humanize.intword(999).should.equal('999.00');
+      humanize.intword(1001).should.equal('1.00 K');
+
+      humanize.intword(Math.pow(1000, 2)).should.equal('1.00 M');
+      humanize.intword(Math.pow(1000, 3)).should.equal('1.00 B');
+      humanize.intword(Math.pow(1000, 4)).should.equal('1.00 T');
+      humanize.intword(1234567890).should.equal('1.23 B');
+    });
+
+    it('should be able to change units or kilo to a different value', function() {
+      var units = ['ones', 'thousands', 'millions', 'billions', 'trillions'];
+      humanize.intword(12, units, 1000).should.equal('12.00 ones');
+      humanize.intword(999, units, 1000).should.equal('999.00 ones');
+      humanize.intword(1024, units, 1000).should.equal('1.02 thousands');
+      humanize.intword(Math.pow(1000, 2), units, 1000).should.equal('1.00 millions');
+      humanize.intword(Math.pow(1000, 3), units, 1000).should.equal('1.00 billions');
+      humanize.intword(Math.pow(1000, 4), units, 1000).should.equal('1.00 trillions');
+      humanize.intword(1234567890, units, 1000).should.equal('1.23 billions');
+    });
+  });
+
+
   describe('#linebreaks', function() {
     it('should wrap the string with <p> tags', function() {
       humanize.linebreaks('').should.equal('<p></p>');
