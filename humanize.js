@@ -418,7 +418,7 @@
     }
     humanized = number / Math.pow(kilo, unit);
 
-    var suffix = units[unit] ? ' ' + units[unit] : '';
+    var suffix = units[unit] ? suffixSep + units[unit] : '';
     return humanize.numberFormat(humanized, decimals, decPoint, thousandsSep) + suffix;
   };
 
