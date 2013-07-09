@@ -330,7 +330,7 @@
 
     // within a minute
     if (timeDiff < 60 && timeDiff > -60) {
-      return (timeDiff >= 0 ? Math.floor(timeDiff) + humanize.catalog[' seconds ago'] : humanize.catalog['in '] + Math.floor(-timeDiff) + humanize.catalog[' seconds');
+      return (timeDiff >= 0 ? Math.floor(timeDiff) + humanize.catalog[' seconds ago'] : humanize.catalog['in '] + Math.floor(-timeDiff) + humanize.catalog[' seconds']);
     }
 
     // within 2 minutes
@@ -384,7 +384,7 @@
 
     var yearDiff = currTimeYears - timestampYears;
     if (yearDiff < 2 && yearDiff > -2) {
-      return (yearDiff >= 0 ? humanize.catalog['a year ago' : humanize.catalog['in a year']);
+      return (yearDiff >= 0 ? humanize.catalog['a year ago'] : humanize.catalog['in a year']);
     }
 
     return (yearDiff >= 0 ? yearDiff + humanize.catalog[' years ago'] : humanize.catalog['in '] + (-yearDiff) + humanize.catalog[' years']);
