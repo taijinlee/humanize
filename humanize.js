@@ -286,7 +286,7 @@
   };
 
   humanize.catalog = {
-    'just': 'just',
+    'just ': 'just ',
     'now': 'now',
     ' seconds ago': ' seconds ago',
     'in ': ' in',
