@@ -285,6 +285,34 @@
     return humanize.date(format, timestamp);
   };
 
+  humanize.catalog = {
+    'just': 'just',
+    'now': 'now',
+    ' seconds ago': ' seconds ago',
+    'in ': ' in',
+    ' seconds': ' seconds',
+    'about a minute ago': 'about a minute ago',
+    'in about a minute': 'in about a minute',
+    ' minutes ago': ' minutes ago',
+    ' minutes': ' minutes',
+    'about an hour ago': 'about an hour ago',
+    'in about an hour': 'in about an hour',
+    ' hours ago': ' hours ago',
+    ' hours': ' hours',
+    '1 day ago': '1 day ago',
+    'in 1 day': 'in 1 day',
+    ' days ago': ' days ago',
+    ' days': ' days',
+    'about a month ago': 'about a month ago',
+    'in about a month': 'in about a month',
+    ' months ago': ' months ago',
+    ' months': ' months',
+    ' a year ago': ' a year ago',
+    'in a year': 'in a year',
+    ' years ago': ' years ago',
+    ' years': ' years'
+  };
+
   /**
    * returns a string representing how many seconds, minutes or hours ago it was or will be in the future
    * Will always return a relative time, most granular of seconds to least granular of years. See unit tests for more details
