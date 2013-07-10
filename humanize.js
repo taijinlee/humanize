@@ -385,26 +385,41 @@
    * For example:
    * If value is 123456789, the output would be 117.7 MB.
    */
-  humanize.filesize = function(filesize, kilo, decimals, decPoint, thousandsSep) {
+  humanize.filesize = function(filesize, kilo, decimals, decPoint, thousandsSep, suffixSep) {
     kilo = (kilo === undefined) ? 1024 : kilo;
-    decimals = isNaN(decimals) ? 2 : Math.abs(decimals);
-    decPoint = (decPoint === undefined) ? '.' : decPoint;
-    thousandsSep = (thousandsSep === undefined) ? ',' : thousandsSep;
     if (filesize <= 0) { return '0 bytes'; }
+    if (filesize < kilo && decimals === undefined) { decimals = 0; }
+    if (suffixSep === undefined) { suffixSep = ' '; }
+    return humanize.intword(filesize, ['bytes', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb'], kilo, decimals, decPoint, thousandsSep, suffixSep);
+  };
 
-    var thresholds = [1];
-    var units = ['bytes', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb'];
-    if (filesize < kilo) { return humanize.numberFormat(filesize, 0) + ' ' + units[0]; }
+  /**
+   * Formats the value like a 'human-readable' number (i.e. '13 K', '4.1 M', '102', etc).
+   *
+   * For example:
+   * If value is 123456789, the output would be 117.7 M.
+   */
+  humanize.intword = function(number, units, kilo, decimals, decPoint, thousandsSep, suffixSep) {
+    var humanized, unit;
 
-    for (var i = 1; i < units.length; i++) {
-      thresholds[i] = thresholds[i-1] * kilo;
-      if (filesize < thresholds[i]) {
-        return humanize.numberFormat(filesize / thresholds[i-1], decimals, decPoint, thousandsSep) + ' ' + units[i-1];
+    units = units || ['', 'K', 'M', 'B', 'T'],
+    unit = units.length - 1,
+    kilo = kilo || 1000,
+    decimals = isNaN(decimals) ? 2 : Math.abs(decimals),
+    decPoint = decPoint || '.',
+    thousandsSep = thousandsSep || ',',
+    suffixSep = suffixSep || '';
+
+    for (var i=0; i < units.length; i++) {
+      if (number < Math.pow(kilo, i+1)) {
+        unit = i;
+        break;
       }
     }
+    humanized = number / Math.pow(kilo, unit);
 
-    // use the last unit if we drop out to here
-    return humanize.numberFormat(filesize / thresholds[units.length - 1], decimals, decPoint, thousandsSep) + ' ' + units[units.length - 1];
+    var suffix = units[unit] ? suffixSep + units[unit] : '';
+    return humanize.numberFormat(humanized, decimals, decPoint, thousandsSep) + suffix;
   };
 
   /**
