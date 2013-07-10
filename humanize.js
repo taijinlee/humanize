@@ -400,7 +400,7 @@
    * If value is 123456789, the output would be 117.7 M.
    */
   humanize.intword = function(number, units, kilo, decimals, decPoint, thousandsSep, suffixSep) {
-    var humanized = number, unit;
+    var humanized, unit;
 
     units = units || ['', 'K', 'M', 'B', 'T'],
     unit = units.length - 1,
