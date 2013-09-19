@@ -16,7 +16,7 @@
     "url": "git://github.com/taijinlee/humanize.git"
   },
   "main": "humanize.js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "dependencies": {},
   "devDependencies": {
     "mocha": "1.0.3",
