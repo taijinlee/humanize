@@ -53,4 +53,4 @@ Converts a string's newlines into br's
 Truncates a string to length-1 and appends '…'. If string is shorter than length, then no-op
 
 ####humanize.truncatewords(string, numWords)####
-Truncates a string to only include the first numWords words and appends '…'. If string has fewer words than newWords, then no-op
+Truncates a string to only include the first numWords words and appends '…'. If string has fewer words than numWords, then no-op
