@@ -285,6 +285,34 @@
     return humanize.date(format, timestamp);
   };
 
+  humanize.catalog = {
+    just_now: 'just now',
+    now: 'now',
+    seconds_ago: ' seconds ago',
+    in: 'in ',
+    seconds: ' seconds',
+    about_a_minute_ago: 'about a minute ago',
+    in_about_a_minute: 'in about a minute',
+    minutes_ago: ' minutes ago',
+    minutes: ' minutes',
+    about_an_hour_ago: 'about an hour ago',
+    in_about_an_hour: 'in about an hour',
+    hours_ago: ' hours ago',
+    hours: ' hours',
+    one_day_ago: '1 day ago',
+    in_1_day: 'in 1 day',
+    days_ago: ' days ago',
+    days: ' days',
+    about_a_month_ago: 'about a month ago',
+    in_about_a_month: 'in about a month',
+    months_ago: ' months ago',
+    months: ' months',
+    a_year_ago: ' a year ago',
+    in_a_year: 'in a year',
+    years_ago: ' years ago',
+    years: ' years'
+  };
+
   /**
    * returns a string representing how many seconds, minutes or hours ago it was or will be in the future
    * Will always return a relative time, most granular of seconds to least granular of years. See unit tests for more details
@@ -297,50 +325,50 @@
 
     // within 2 seconds
     if (timeDiff < 2 && timeDiff > -2) {
-      return (timeDiff >= 0 ? 'just ' : '') + 'now';
+      return (timeDiff >= 0) ? humanize.catalog.just_now : humanize.catalog.now;
     }
 
     // within a minute
     if (timeDiff < 60 && timeDiff > -60) {
-      return (timeDiff >= 0 ? Math.floor(timeDiff) + ' seconds ago' : 'in ' + Math.floor(-timeDiff) + ' seconds');
+      return (timeDiff >= 0 ? Math.floor(timeDiff) + humanize.catalog.seconds_ago : humanize.catalog.in + Math.floor(-timeDiff) + humanize.catalog.seconds);
     }
 
     // within 2 minutes
     if (timeDiff < 120 && timeDiff > -120) {
-      return (timeDiff >= 0 ? 'about a minute ago' : 'in about a minute');
+      return (timeDiff >= 0 ? humanize.catalog.about_a_minute_ago : humanize.catalog.in_about_a_minute);
     }
 
     // within an hour
     if (timeDiff < 3600 && timeDiff > -3600) {
-      return (timeDiff >= 0 ? Math.floor(timeDiff / 60) + ' minutes ago' : 'in ' + Math.floor(-timeDiff / 60) + ' minutes');
+      return (timeDiff >= 0 ? Math.floor(timeDiff / 60) + humanize.catalog.minutes_ago : humanize.catalog.in + Math.floor(-timeDiff / 60) + humanize.catalog.minutes);
     }
 
     // within 2 hours
     if (timeDiff < 7200 && timeDiff > -7200) {
-      return (timeDiff >= 0 ? 'about an hour ago' : 'in about an hour');
+      return (timeDiff >= 0 ? humanize.catalog.about_an_hour_ago : humanize.catalog.in_about_an_hour);
     }
 
     // within 24 hours
     if (timeDiff < 86400 && timeDiff > -86400) {
-      return (timeDiff >= 0 ? Math.floor(timeDiff / 3600) + ' hours ago' : 'in ' + Math.floor(-timeDiff / 3600) + ' hours');
+      return (timeDiff >= 0 ? Math.floor(timeDiff / 3600) + humanize.catalog.hours_ago : humanize.catalog.in + Math.floor(-timeDiff / 3600) + humanize.catalog.hours);
     }
 
     // within 2 days
     var days2 = 2 * 86400;
     if (timeDiff < days2 && timeDiff > -days2) {
-      return (timeDiff >= 0 ? '1 day ago' : 'in 1 day');
+      return (timeDiff >= 0 ? humanize.catalog.one_day_ago : humanize.catalog.in_1_day);
     }
 
     // within 29 days
     var days29 = 29 * 86400;
     if (timeDiff < days29 && timeDiff > -days29) {
-      return (timeDiff >= 0 ? Math.floor(timeDiff / 86400) + ' days ago' : 'in ' + Math.floor(-timeDiff / 86400) + ' days');
+      return (timeDiff >= 0 ? Math.floor(timeDiff / 86400) + humanize.catalog.days_ago : humanize.catalog.in + Math.floor(-timeDiff / 86400) + humanize.catalog.days);
     }
 
     // within 60 days
     var days60 = 60 * 86400;
     if (timeDiff < days60 && timeDiff > -days60) {
-      return (timeDiff >= 0 ? 'about a month ago' : 'in about a month');
+      return (timeDiff >= 0 ? humanize.catalog.about_a_month_ago : humanize.catalog.in_about_a_month);
     }
 
     var currTimeYears = parseInt(humanize.date('Y', currTime), 10);
@@ -351,15 +379,15 @@
     // within a year
     var monthDiff = currTimeMonths - timestampMonths;
     if (monthDiff < 12 && monthDiff > -12) {
-      return (monthDiff >= 0 ? monthDiff + ' months ago' : 'in ' + (-monthDiff) + ' months');
+      return (monthDiff >= 0 ? monthDiff + humanize.catalog.months_ago : humanize.catalog.in + (-monthDiff) + humanize.catalog.months);
     }
 
     var yearDiff = currTimeYears - timestampYears;
     if (yearDiff < 2 && yearDiff > -2) {
-      return (yearDiff >= 0 ? 'a year ago' : 'in a year');
+      return (yearDiff >= 0 ? humanize.catalog.a_year_ago : humanize.catalog.in_a_year);
     }
 
-    return (yearDiff >= 0 ? yearDiff + ' years ago' : 'in ' + (-yearDiff) + ' years');
+    return (yearDiff >= 0 ? yearDiff + humanize.catalog.years_ago : humanize.catalog.in + (-yearDiff) + humanize.catalog.years);
   };
 
   /**
