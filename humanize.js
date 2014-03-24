@@ -471,7 +471,21 @@
     return words.slice(0, numWords).join(' ') + '…';
   };
 
+  /**
+   * Converts seconds to other units if possible. So
+   * 24*60*60*2+120+120 seconds becomes "2 days 2 hours 2 minutes"
+   *
+   * The second argument can limit on how many units you want
+   * to see. The previous example with extra argument of 2 would
+   * only show 2 days 2 hours and omit the minutes part.
+   *
+   * If any of the units is 0 then the function wont't return
+   * those.
+   */
   humanize.humanizeSeconds = function(seconds, numWords) {
+    if (seconds === 0)
+      return "0 minutes";
+
     var week = Math.floor(seconds / (7 * 24 * 60 * 60));
     var weekS = (week == 1) ? " week" : " weeks";
     seconds = seconds % (7 * 24 * 60 * 60);

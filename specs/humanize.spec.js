@@ -412,6 +412,7 @@ describe('humanize:', function() {
 
   describe('#humanizeSeconds', function() {
     it('should be able to convert seconds to human readables', function() {
+      humanize.humanizeSeconds(0).should.equal('0 minutes');
       humanize.humanizeSeconds(60).should.equal('1 minute');
       humanize.humanizeSeconds(120).should.equal('2 minutes');
       humanize.humanizeSeconds(3600).should.equal('1 hour');
