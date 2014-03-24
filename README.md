@@ -54,3 +54,8 @@ Truncates a string to length-1 and appends '…'. If string is shorter than leng
 
 ####humanize.truncatewords(string, numWords)####
 Truncates a string to only include the first numWords words and appends '…'. If string has fewer words than numWords, then no-op
+
+####humanize.humanizeSeconds(seconds, numWords)####
+Converts seconds to other units if possible. So 24*60*60*2+120+120 seconds becomes "2 days 2 hours 2 minutes"
+
+The second argument can limit on how many units you want to see. The previous example with extra argument of 2 would only show 2 days 2 hours and omit the minutes part.
