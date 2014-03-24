@@ -410,5 +410,19 @@ describe('humanize:', function() {
   });
 
 
+  describe('#humanizeSeconds', function() {
+    it('should be able to convert seconds to human readables', function() {
+      humanize.humanizeSeconds(60).should.equal('1 minute');
+      humanize.humanizeSeconds(120).should.equal('2 minutes');
+      humanize.humanizeSeconds(3600).should.equal('1 hour');
+      humanize.humanizeSeconds(7200).should.equal('2 hours');
+      humanize.humanizeSeconds(24*60*60).should.equal('1 day');
+      humanize.humanizeSeconds(2*24*60*60).should.equal('2 days');
+      humanize.humanizeSeconds(2*24*60*60 + 7200).should.equal('2 days 2 hours');
+      humanize.humanizeSeconds(2*24*60*60 + 7200 + 120).should.equal('2 days 2 hours 2 minutes');
+      humanize.humanizeSeconds(2*24*60*60 + 7200 + 120, 2).should.equal('2 days 2 hours');
+      humanize.humanizeSeconds(2*24*60*60 + 7200 + 120, 1).should.equal('2 days');
+    });
+  });
 
 });

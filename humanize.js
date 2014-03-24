@@ -471,4 +471,55 @@
     return words.slice(0, numWords).join(' ') + '…';
   };
 
+  humanize.humanizeSeconds = function(seconds, numWords) {
+    var week = Math.floor(seconds / (7 * 24 * 60 * 60));
+    var weekS = (week == 1) ? " week" : " weeks";
+    seconds = seconds % (7 * 24 * 60 * 60);
+
+    var day = Math.floor(seconds / (24 * 60 * 60));
+    var dayS = (day == 1) ? " day" : " days";
+    seconds = seconds % (24 * 60 * 60);
+
+    var hour = Math.floor(seconds / 3600);
+    var hourS = (hour == 1) ? " hour" : " hours";
+    seconds = seconds % (3600);
+
+    var min = Math.floor(seconds / 60);
+    var minS = (min == 1) ? " minute" : " minutes";
+    seconds = seconds % (60);
+
+    // if number of words is undefined we default
+    // to showing all of them, 10 is enough not to
+    // reach 0 :)
+    if (isNaN(numWords))
+      numWords = 10;
+
+    var rtrn = "";
+    if (week !== 0 && numWords > 0) {
+      rtrn = rtrn + week + weekS + " ";
+      numWords--;
+    }
+
+    if (day !== 0 && numWords > 0) {
+      rtrn = rtrn + day + dayS + " ";
+      numWords--;
+    }
+
+    if (hour !== 0 && numWords > 0) {
+      rtrn = rtrn + hour + hourS + " ";
+      numWords--;
+    }
+
+    if (min !== 0 && numWords > 0) {
+      rtrn = rtrn + min + minS + " ";
+      numWords--;
+    }
+
+    // remove the trailing space
+    if (rtrn.length > 0)
+      rtrn = rtrn.substring(0, rtrn.length-1);
+
+    return rtrn;
+  };
+
 }).call(this);
