@@ -38,7 +38,7 @@ Returns 'today', 'tomorrow' or 'yesterday', as appropriate, otherwise format the
 Returns a relative time to the current time, seconds as the most granular up to years to the least granular.
 
 ####humanize.ordinal(integer)####
-Converts a number into its [ordinal representation](http://en.wikipedia.org/wiki/Ordinal_number_\(linguistics\)).
+Converts a number into its [ordinal representation](https://en.wikipedia.org/wiki/Ordinal_number_%28linguistics%29).
 
 ####humanize.filesize(filesize [, kilo = 1024, decimals = 2, decPoint = '.', thousandsSep = ',']) ####
 Converts a byte count to a human readable value using kilo as the basis, and numberFormat formatting
