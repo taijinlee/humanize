@@ -232,7 +232,7 @@
 
       // Seconds since UNIX epoch
       U: function () { return jsdate.getTime() / 1000 || 0; }
-    };    
+    };
 
     return format.replace(formatChr, formatChrCb);
   };
@@ -385,12 +385,13 @@
    * For example:
    * If value is 123456789, the output would be 117.7 MB.
    */
-  humanize.filesize = function(filesize, kilo, decimals, decPoint, thousandsSep, suffixSep) {
+  humanize.filesize = function(filesize, kilo, decimals, decPoint, thousandsSep, suffixSep, units) {
+    units = units || ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
     kilo = (kilo === undefined) ? 1024 : kilo;
     if (filesize <= 0) { return '0 bytes'; }
     if (filesize < kilo && decimals === undefined) { decimals = 0; }
     if (suffixSep === undefined) { suffixSep = ' '; }
-    return humanize.intword(filesize, ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'], kilo, decimals, decPoint, thousandsSep, suffixSep);
+    return humanize.intword(filesize, units, kilo, decimals, decPoint, thousandsSep, suffixSep);
   };
 
   /**
@@ -425,7 +426,7 @@
   /**
    * Replaces line breaks in plain text with appropriate HTML
    * A single newline becomes an HTML line break (<br />) and a new line followed by a blank line becomes a paragraph break (</p>).
-   * 
+   *
    * For example:
    * If value is Joel\nis a\n\nslug, the output will be <p>Joel<br />is a</p><p>slug</p>
    */
