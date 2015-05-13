@@ -40,7 +40,7 @@ Returns a relative time to the current time, seconds as the most granular up to 
 ####humanize.ordinal(integer)####
 Converts a number into its [ordinal representation](http://en.wikipedia.org/wiki/Ordinal_number_\(linguistics\)).
 
-####humanize.filesize(filesize [, kilo = 1024, decimals = 2, decPoint = '.', thousandsSep = ',']) ####
+####humanize.filesize(filesize [, kilo = 1024, decimals = 2, decPoint = '.', thousandsSep = ',', suffixSep = ' ', units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB']]) ####
 Converts a byte count to a human readable value using kilo as the basis, and numberFormat formatting
 
 ####humanize.linebreaks(string)####
