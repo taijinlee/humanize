@@ -31,6 +31,9 @@ This is a port of [php.js date](http://phpjs.org/functions/date:380) and behaves
 ####humanize.numberFormat(number [, decimals = 2, decPoint = '.', thousandsSep = ','])####
 Format a number to have decimal significant decimal places, using decPoint as the decimal separator, and thousandsSep as thousands separater
 
+####humanize.intword(number [, units = ['', 'K', 'M', 'B', 'T'], kilo = 1000, decimals = 2, decPoint = '.', thousandsSep = ',', suffixSep = ''])####
+Format a number to have a word like representation
+
 ####humanize.naturalDay(timestamp [, format = 'Y-m-d'])####
 Returns 'today', 'tomorrow' or 'yesterday', as appropriate, otherwise format the date using the passed format with humanize.date()
 
