@@ -2,7 +2,7 @@
 
 Javascript data formatter for human readability.
 
-Idea, name, and initial code blatently stolen from [milanvrekic/JS-humanize](http://github.com/milanvrekic/JS-humanize)
+Idea, name, and initial code blatantly stolen from [milanvrekic/JS-humanize](http://github.com/milanvrekic/JS-humanize)
 
 Can be loaded via AMD or in node directly.
 
